@@ -3,9 +3,6 @@
 #include <LiquidCrystal_I2C.h> // LCD library
 #include <DHT.h> // DHT11 temperature and humidity sensor library
 
-#include<SoftwareSerial.h>
-SoftwareSerial B(10,11);    //10-RX,  11-TX
-
 // Define DHT11 sensor digital pin and type
 #define DHTPIN 2
 #define DHTTYPE DHT11
@@ -21,9 +18,6 @@ const int fanPin = 9;
 const int LDR_PIN = A5;
 
 void setup() {
-
-  B.begin(9600);
-
   Serial.begin(9600); // Start serial communication
   dht.begin(); // Start DHT11 sensor
 
@@ -56,15 +50,6 @@ void loop() {
   lcd.print(h);
   lcd.print("%");
 
-  
-  
-  B.print("Temp: ");
-  B.print(t);
-  B.print("C");
-  B.print("Humidity: ");
-  B.print(h);
-  B.print("%");
-
   // Print temperature and humidity values to the serial monitor
   Serial.print("Humidity: ");
   Serial.print(h);
@@ -90,22 +75,12 @@ void loop() {
   // Display soil moisture and watering status on LCD
   lcd.clear();
   lcd.setCursor(0, 0);
-
-
-
   if (percentMoisture > 90) {
     lcd.print("Soil: ");
     lcd.print(percentMoisture);
     lcd.print("%");
     lcd.setCursor(0, 1);
     lcd.print("Need Water");
-
-    B.print("Soil: ");
-    B.print(percentMoisture);
-    B.print("%");
-  
-    B.print("Need Water");
-
     digitalWrite(buzzerPin, HIGH); // Turn on the buzzer
   } else {
     lcd.print("Soil : ");
@@ -113,13 +88,6 @@ void loop() {
     lcd.print("%");
     lcd.setCursor(0, 1);
     lcd.print("No Water Needed");
-
-    B.print("Soil : ");
-    B.print(percentMoisture);
-    B.print("%");
-   
-    B.print("No Water Needed");
-
     digitalWrite(buzzerPin, LOW); // Turn off the buzzer
   }
 
@@ -142,20 +110,11 @@ void loop() {
   lcd.print("Light: ");
   lcd.print(ldrValue);
 
-  
-  B.print("Light: ");
-  B.print(ldrValue);
-
   // Set cursor position on second row, first column of LCD display and print Lux value
   lcd.setCursor(0, 1);
   lcd.print("Lux: ");
   lcd.print(lux);
   lcd.print(" lm/m2"); // Print Lux value with units
-
-
-  B.print("Lux: ");
-  B.print(lux);
-  B.print(" lm/m2"); 
 
   delay(2000); // Wait for 2 seconds before continuing
 }
